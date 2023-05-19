@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
@@ -17,102 +10,116 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import Button from "./components/Button";
+import Row from "./components/Row";
+import utills, { initialState } from "./utills/utills"
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+export default class App extends React.Component {
+  state = initialState;
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // handle tap method
+  HandleButtonPress = (type, value) => {
+    this.setState((state) => utills(type, value, state), () => {console.log(this.state)});
   };
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  // render method
+  render() {
+    return(
+      <View style={styles.container}>
+        <SafeAreaView>
+          <Text style={styles.value}>
+            {parseFloat(this.state.currentValue).toLocaleString()}
+          </Text>
+          
+
+          
+          <Row>
+            <Button
+              text="C"
+              theme="secondary"
+              onPress={() => this.HandleButtonPress("clear")}
+            />
+
+            <Button
+              text="+/-"
+              theme="secondary"
+              onPress={() => this.HandleButtonPress("posneg")}
+            />
+
+            <Button
+              text="%"
+              theme="secondary"
+              onPress={() => this.HandleButtonPress("percentage")}
+            />
+
+            <Button
+              text="/"
+              theme="main"
+              onPress={() => this.HandleButtonPress("operator", "/")}
+            />
+          </Row>
+
+          <Row>
+            <Button text="7" onPress={() => this.HandleButtonPress("number", 7)} />
+            <Button text="8" onPress={() => this.HandleButtonPress("number", 8)} />
+            <Button text="9" onPress={() => this.HandleButtonPress("number", 9)} />
+            <Button
+              text="X"
+              theme="main"
+              onPress={() => this.HandleButtonPress("operator", "*")}
+            />
+          </Row>
+
+          <Row>
+            <Button text="5" onPress={() => this.HandleButtonPress("number", 5)} />
+            <Button text="6" onPress={() => this.HandleButtonPress("number", 6)} />
+            <Button text="7" onPress={() => this.HandleButtonPress("number", 7)} />
+            <Button
+              text="-"
+              theme="main"
+              onPress={() => this.HandleButtonPress("operator", "-")}
+            />
+          </Row>
+
+          <Row>
+            <Button text="1" onPress={() => this.HandleButtonPress("number", 1)} />
+            <Button text="2" onPress={() => this.HandleButtonPress("number", 2)} />
+            <Button text="3" onPress={() => this.HandleButtonPress("number", 3)} />
+            <Button
+              text="+"
+              theme="main"
+              onPress={() => this.HandleButtonPress("operator", "+")}
+            />
+          </Row>
+
+          <Row>
+            <Button text="0" theme="double" onPress={() => this.HandleButtonPress("number", 0)} />
+            <Button text="." onPress={() => this.HandleButtonPress("number", ".")} />
+            <Button
+              text="="
+              theme="main"
+              onPress={() => this.HandleButtonPress("equal", "=")}
+            />
+          </Row>
+        </SafeAreaView>
+      </View>
+    )
+  }
+
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    backgroundColor: "#202020",
+    justifyContent: "flex-end",
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  value: {
+    color: "#fff",
+    fontSize: 42,
+    textAlign: "right",
+    marginRight: 20,
+    marginBottom: 10,
   },
 });
 
-export default App;
